@@ -2,7 +2,7 @@ from typing import TypeVar
 
 T = TypeVar("T", str)
 
-# Asumimos que no hay elementos repetidos
+# Assuming there are no repeated elements
 LIST: list[T] = [
     ...
 ]
@@ -31,7 +31,7 @@ def less(el1: str, el2: str) -> bool:
 def get_grater_in_pair(to_sort: list[T]) -> dict[T, T]:
     ans = {}
 
-    # Guardo cuáles son los elementos más grandes de cada pareja
+    # Store the larger elements of each pair
     for first, second in zip(to_sort[::2], to_sort[1::2]):
         lower, greater = get_min_max(first, second)
         ans[greater] = lower
@@ -48,22 +48,22 @@ def make_power_of_to_sort(keys: list[T], pairs: dict[T, T], to_sort: list[T]) ->
     unsorted = []
 
     curr_group = []
-    prev_grup_len = 0
-    # Ordeno la mitad baja atendiendo a las llaves del diccionario
+    prev_group_len = 0
+    # Sort the lower half according to the dictionary keys
     for key in keys[2::]:
-        # Añado el elemento al inicio de su grupo
+        # Add the element to the beginning of its group
         curr_group = [pairs[key]] + curr_group
 
-        # Compruebo si tengo que añadir el grupo actual a la lista
-        if is_power_of_2(prev_grup_len + len(curr_group)):
-            # Añado el grupo al final de la lista
+        # Check if the current group needs to be added to the list
+        if is_power_of_2(prev_group_len + len(curr_group)):
+            # Add the group to the end of the list
             unsorted.extend(curr_group)
-            # Actualizo el último número potencia de 2 encontrado
-            prev_grup_len = len(curr_group)
-            # Vacío el grupo actual
+            # Update the last power of 2 found
+            prev_group_len = len(curr_group)
+            # Empty the current group
             curr_group = []
 
-    # Si es impar, añado el último elemento
+    # If the length is odd, add the last element
     if (len(to_sort) % 2):
         unsorted.append(to_sort[-1])
 
@@ -81,22 +81,22 @@ def get_key_from_value(dictionary: dict[TK, TV], value: TV) -> TK:
 def get_rightmost_index(item_to_insert: T, sorted_list: list[T], pairs: dict[T, T]) -> int:
 
     try:
-        # Obtengo el elemento que sé que es mayor que el item a insertar
+        # Get the element that is known to be greater than the item to insert
         upper_bound = get_key_from_value(pairs, item_to_insert)
     except StopIteration:
         return len(sorted_list) - 1
-    # Obtengo el índice de este elemento
+    # Get the index of this element
     return next((i for i, item in enumerate(sorted_list) if item == upper_bound)) - 1
 
 
 def get_index_to_insert(item: T, dest: list[T], left: int, right: int) -> int:
 
     while left < right:
-        # Obtengo el elemento medio
+        # Get the middle element
         mid = (left + right) // 2
 
-        # Si el elemento a insertar es menor que el elemento del medio,
-        # actualizo el extremo superior
+        # If the item to insert is less than the middle element,
+        # update the upper end
         if less(item, dest[mid]):
             right = mid - 1
         else:
@@ -115,15 +115,15 @@ def insertion(to_insert: list[T], sorted: list[T], pairs: dict[T, T]) -> list[T]
 
     for item in to_insert:
 
-        # Obtengo cuál será el último elemento que compruebe
+        # Get the last element to compare
         rightmost = get_rightmost_index(item, sorted, pairs)
-        # Empiezo a comparar desde la izquierda del todo
+        # Start comparing from the leftmost position
         leftmost = 0
 
-        # Calculo en qué punto debo introducir el elemento
+        # Calculate the index to insert the item
         index = get_index_to_insert(item, sorted, leftmost, rightmost)
 
-        # Ya tengo la posición donde debo insertarlo
+        # Insert the item at the calculated position
         sorted = sorted[:index] + [item] + sorted[index:]
 
     return sorted
@@ -131,21 +131,21 @@ def insertion(to_insert: list[T], sorted: list[T], pairs: dict[T, T]) -> list[T]
 
 def merge_insertion(to_sort: list[T]) -> list[T]:
 
-    # Caso base en el que la lista está ya ordenada
+    # Base case when the list is already sorted
     if len(to_sort) <= 1:
         return to_sort
 
-    # Ordeno todas las parejas
+    # Sort all the pairs
     sorted_pairs = get_grater_in_pair(to_sort)
 
-    # Obtengo una lista con las llaves ordenadas
+    # Get a list with the sorted keys
     sorted_keys = merge_insertion(list(sorted_pairs.keys()))
-    # Añado el elemento cuya posición conozco
+    # Add the element whose position is known
     sorted_keys = [sorted_pairs[sorted_keys[0]]] + sorted_keys
 
     lower = make_power_of_to_sort(sorted_keys, sorted_pairs, to_sort)
 
-    # Aplico algoritmo de bisección para saber dónde va cada elemento
+    # Apply the bisection algorithm to determine the position of each element
     sorted_keys = insertion(lower, sorted_keys, sorted_pairs)
 
     return sorted_keys
@@ -155,7 +155,7 @@ def sort():
 
     list_to_sort = LIST
 
-    # Compruebo que no haya elementos repetidos
+    # Check for repeated elements
     if (len(list_to_sort) != len(set(list_to_sort))):
         return False
 

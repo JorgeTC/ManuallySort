@@ -1,14 +1,11 @@
-from typing import TypeVar
-
-T = TypeVar("T", str)
 
 # Assuming there are no repeated elements
-LIST: list[T] = [
+LIST: list[str] = [
     ...
 ]
 
 
-def get_min_max(el1: T, el2: T) -> tuple[T, T]:
+def get_min_max(el1: str, el2: str) -> tuple[str, str]:
 
     if isinstance(el1, int):
         print(f"Comparing {el1} and {el2}")
@@ -28,7 +25,7 @@ def less(el1: str, el2: str) -> bool:
     return (el1, el2) == get_min_max(el1, el2)
 
 
-def get_grater_in_pair(to_sort: list[T]) -> dict[T, T]:
+def get_grater_in_pair(to_sort: list[str]) -> dict[str, str]:
     ans = {}
 
     # Store the larger elements of each pair
@@ -43,7 +40,7 @@ def is_power_of_2(n: int) -> bool:
     return (n & (n-1) == 0) and n != 0
 
 
-def make_power_of_to_sort(keys: list[T], pairs: dict[T, T], to_sort: list[T]) -> list[T]:
+def make_power_of_to_sort(keys: list[str], pairs: dict[str, str], to_sort: list[str]) -> list[str]:
 
     unsorted = []
 
@@ -70,15 +67,11 @@ def make_power_of_to_sort(keys: list[T], pairs: dict[T, T], to_sort: list[T]) ->
     return unsorted
 
 
-TK = TypeVar('TK')
-TV = TypeVar('TV')
-
-
-def get_key_from_value(dictionary: dict[TK, TV], value: TV) -> TK:
+def get_key_from_value(dictionary: dict, value):
     return next((key for key, v in dictionary.items() if v == value))
 
 
-def get_rightmost_index(item_to_insert: T, sorted_list: list[T], pairs: dict[T, T]) -> int:
+def get_rightmost_index(item_to_insert: str, sorted_list: list[str], pairs: dict[str, str]) -> int:
 
     try:
         # Get the element that is known to be greater than the item to insert
@@ -89,7 +82,7 @@ def get_rightmost_index(item_to_insert: T, sorted_list: list[T], pairs: dict[T, 
     return next((i for i, item in enumerate(sorted_list) if item == upper_bound)) - 1
 
 
-def get_index_to_insert(item: T, dest: list[T], left: int, right: int) -> int:
+def get_index_to_insert(item: str, dest: list[str], left: int, right: int) -> int:
 
     while left < right:
         # Get the middle element
@@ -111,7 +104,7 @@ def get_index_to_insert(item: T, dest: list[T], left: int, right: int) -> int:
         return left + 1
 
 
-def insertion(to_insert: list[T], sorted: list[T], pairs: dict[T, T]) -> list[T]:
+def insertion(to_insert: list[str], sorted: list[str], pairs: dict[str, str]) -> list[str]:
 
     for item in to_insert:
 
@@ -129,7 +122,7 @@ def insertion(to_insert: list[T], sorted: list[T], pairs: dict[T, T]) -> list[T]
     return sorted
 
 
-def merge_insertion(to_sort: list[T]) -> list[T]:
+def merge_insertion(to_sort: list[str]) -> list[str]:
 
     # Base case when the list is already sorted
     if len(to_sort) <= 1:
